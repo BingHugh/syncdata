@@ -1,3 +1,3 @@
 #ins[id]  username      pooltype  ip                port    machine_passwd  database_passwd
-1         hs_tabase     0         192.168.137.132   3306    root            root
-2         hs_tatrade1   1         192.168.137.130   3306    root            root
+ins1      hs_tabase     0         192.168.137.132   3306    root            root
+ins2      hs_tatrade1   1         192.168.137.130   3306    root            root
