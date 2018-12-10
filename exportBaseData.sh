@@ -74,9 +74,9 @@ mysql -uroot -p$passwd -h$ip -P$port << EOF
 EOF
 
 if [ "$?" -eq "0" ]; then
-  echo "export base data done."
+  echo "export data of $user done."
 else
-  echo "export base data failed, exit now..."
+  echo "export data of $user failed, exit now..."
   exit 1
 fi
 
