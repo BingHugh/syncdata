@@ -4,8 +4,9 @@
 set file [lindex $argv 0]
 set host [lindex $argv 1]
 set passwd [lindex $argv 2]
+set localpath [lindex $argv 3]
 
-spawn scp -r root@$host:$file /home/mysql/syncdata
+spawn scp -r root@$host:$file $localpath
 expect {
   "(yes/no)?" {send "yes\n"; exp_continue;}
   "*assword:" {send "$passwd\n";}
