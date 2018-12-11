@@ -15,6 +15,7 @@ expect {
 }
 
 expect "#*"
+send "mkdir -p $target\n"
 send "\\cp -r $file $target\n"
 
 send "exit\n"

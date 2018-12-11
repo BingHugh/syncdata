@@ -69,6 +69,7 @@ do
       port=$(echo $line | awk '{print $5}')
       passwd_host=$(echo $line | awk '{print $6}')
       passwd_db=$(echo $line | awk '{print $7}')
+      
       if [ -z $user -o -z $ip -o -z $port ]; then
         echo "invalid trade configuration, user=$user,ip=$ip,port=$port, exit now..."
         exit 1
@@ -88,16 +89,17 @@ do
         source $file
 EOF
         if [ "$?" = "0" ]; then
-          echo "export data of $user done."
+          echo "export data of $user in $ip:$port done."
         else
-          echo "export data of $user failed, exit now..."
+          echo "export data of $user in $ip:$port failed, exit now..."
           exit 1
         fi
 
+        #move exported data to target path
+        target_path=$dir_export"/expdata_"$user
+
         if [ "$ip" = "$ip_base" ]; then
           #this trade is in local host
-          #move exported data to target path
-          target_path=$dir_export"/expdata_"$user
           mkdir -p $target_path
           if [ "$?" != "0" ]; then
             echo "mkdir $target_path failed, exit now..."
@@ -106,7 +108,12 @@ EOF
           mv /tmp/exp_* $target_path
         else
           #this trade is in remote host
-         : 
+          chmod +x $dir_cfg/moveRemoteExportedData.exp
+          $dir_cfg/moveRemoteExportedData.exp /tmp/exp_* $target_path $ip $passwd_host     
+          if [ "$?" != "0" ]; then
+            echo "move remote exported data failed for $user in $ip, exit now..."
+            exit 1
+          fi
         fi
       fi 
     else
@@ -119,17 +126,6 @@ EOF
   esac
 
 done < $dir_cfg/host.cnf
-
-
-
-
-
-
-
-
-
-
-#export trade in remote host
 
 
 

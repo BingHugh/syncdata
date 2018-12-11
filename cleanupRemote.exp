@@ -1,0 +1,20 @@
+#!/usr/bin/expect
+#cleanupRemote.exp
+
+set file [lindex $argv 0]
+set host [lindex $1]
+set passwd [lindex $2]
+
+set timeout 10
+
+spawn ssh root@$host
+expect { 
+  "*yes/no"     {send "yes\n"; exp_continue;}
+  "*password:"  {send "$passwd\n";} 
+}
+
+expect "#*"
+send "rm -rf $file\n"
+send "exit\n"
+expect eof
+
