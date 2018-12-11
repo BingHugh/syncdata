@@ -4,7 +4,7 @@
 dir_cfg=/home/mysql/syncdata
 dir_tmp=/tmp/syncdata
 dir_export=/home/mysql/expdata
-
+tmpdir=/tmp
 
 
 if [ -d $dir_export ]; then
@@ -80,11 +80,17 @@ do
             syncdir=$(echo "$line" | awk -F'\t' '{print $2}')
             if [ "$syncdir" = "1" ]; then
               tablename=$(echo "$line" | awk -F'\t' '{print $1}')
-              echo "select * from $tablename into outfile '/tmp/exp_$tablename';" >> $file
+              echo "select * from $tablename into outfile '$tmpdir/exp_$tablename';" >> $file
             fi
         done < $dir_tmp/ta_tsynctableinfo
         
         #login mysql and execute the sql         
+        chmod +x $dir_cfg/cleanupRemote.exp
+
+        #remove old files in /tmp to make sure data can be exported successfully
+        $dir_cfg/cleanupRemote.exp $tmpdir/exp_* $ip $passwd_host
+        rm -rf $tmpdir/exp_*
+
         mysql -uroot -p$passwd_db -h$ip -P$port << EOF
         source $file
 EOF
@@ -114,6 +120,7 @@ EOF
             echo "move remote exported data failed for $user in $ip, exit now..."
             exit 1
           fi
+          $dir_cfg/cleanupRemote.exp $tmpdir/exp_* $ip $passwd_host
         fi
       fi 
     else

@@ -2,8 +2,8 @@
 #cleanupRemote.exp
 
 set file [lindex $argv 0]
-set host [lindex $1]
-set passwd [lindex $2]
+set host [lindex $argv 1]
+set passwd [lindex $argv 2]
 
 set timeout 10
 
