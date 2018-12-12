@@ -1,16 +1,16 @@
 #!/bin/sh
 #exportTradeData.sh
 
-dir_cfg=/home/mysql/syncdata
+#dir_cfg=/home/mysql/syncdata
 dir_tmp=/tmp/syncdata
-dir_export=/home/mysql/expdata
+dir_exp=/home/mysql/expdata
 tmpdir=/tmp
 
 
-if [ -d $dir_export ]; then
+if [ -d $dir_exp ]; then
   :
 else
-  echo "export path $dir_export is invalid, exit now..."
+  echo "export path $dir_exp is invalid, exit now..."
   exit 1
 fi
 
@@ -41,7 +41,7 @@ do
     continue
     ;;
   esac
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 if [ -z $user_base ]; then
   echo "no base user found, please check the configuration, exit now..."
@@ -84,10 +84,10 @@ do
         done < $dir_tmp/ta_tsynctableinfo
         
         #login mysql and execute the sql         
-        chmod +x $dir_cfg/cleanupRemote.exp
+        chmod +x cleanupRemote.exp
 
         #remove old files in /tmp to make sure data can be exported successfully
-        $dir_cfg/cleanupRemote.exp $tmpdir/exp_* $ip $passwd_host
+        ./cleanupRemote.exp $tmpdir/exp_* $ip $passwd_host
         rm -rf $tmpdir/exp_*
 
         mysql -uroot -p$passwd_db -h$ip -P$port << EOF
@@ -101,7 +101,7 @@ EOF
         fi
 
         #move exported data to target path
-        target_path=$dir_export"/expdata_"$user
+        target_path=$dir_exp"/expdata_"$user
 
         if [ "$ip" = "$ip_base" ]; then
           #this trade is in local host
@@ -113,13 +113,13 @@ EOF
           mv /tmp/exp_* $target_path
         else
           #this trade is in remote host
-          chmod +x $dir_cfg/moveRemoteExportedData.exp
-          $dir_cfg/moveRemoteExportedData.exp /tmp/exp_* $target_path $ip $passwd_host     
+          chmod +x moveRemoteExportedData.exp
+          ./moveRemoteExportedData.exp /tmp/exp_* $target_path $ip $passwd_host     
           if [ "$?" != "0" ]; then
             echo "move remote exported data failed for $user in $ip, exit now..."
             exit 1
           fi
-          $dir_cfg/cleanupRemote.exp $tmpdir/exp_* $ip $passwd_host
+          ./cleanupRemote.exp $tmpdir/exp_* $ip $passwd_host
           
         fi
       fi 
@@ -132,8 +132,8 @@ EOF
     ;;
   esac 
 
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 #scp remote files to local
-sh $dir_cfg/scpToLocal.sh
+sh scpToLocal.sh
 

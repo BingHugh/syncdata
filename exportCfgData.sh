@@ -1,16 +1,16 @@
 #!/bin/sh
 #exportCfgData.sh
 
-dir_cfg=/home/mysql/syncdata
+#dir_cfg=/home/mysql/syncdata
 dir_tmp=/tmp/syncdata
 
 #check whether the config data is valid
-if [ -d $dir_cfg ]; then
-  :
-else
-  echo "cfg path $dir_cfg is invalid, exit now"
-  exit 1
-fi
+#if [ -d $dir_cfg ]; then
+#  :
+#else
+#  echo "cfg path $dir_cfg is invalid, exit now"
+#  exit 1
+#fi
 
 #pick up information of base host
 while read line
@@ -34,7 +34,7 @@ do
     continue
     ;;
   esac
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 if [ -z $user ]; then
   echo "no base user found, please check the configuration. exit now..."

@@ -2,7 +2,7 @@
 #importData.sh
 #import exported data to each database
 
-dir_cfg=/home/mysql/syncdata
+#dir_cfg=/home/mysql/syncdata
 dir_exp=/home/mysql/expdata
 dir_tmp=/tmp/syncdata
 
@@ -18,7 +18,7 @@ do
     port_base=$(echo $line | awk '{print $5}')
     passwd_db_base=$(echo $line | awk '{print $7}')
   fi
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 if [ -z $user_base -o -z $ip_base -o -z $port_base ]; then
   echo "base host not found, username=$user_base, ip=$ip_base, please check host.cnf, exit now..."
@@ -93,6 +93,7 @@ do
     use $user_base;
     source $file_base;
 EOF
+    echo "import data for $user_base done."
     #################import data to base end##################
 
 
@@ -123,7 +124,9 @@ EOF
     source $dir_tmp/tableStructBase.sql;
     source $file;
 EOF
+    echo "import data for $user done."
     #**************import data to trade end***************#
   fi
-done < $dir_cfg/host.cnf
+done < host.cnf
 
+echo "import data for all databases done."

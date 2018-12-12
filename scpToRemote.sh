@@ -4,7 +4,7 @@
 #scp local exported base data to remote trade machine
 #/home/mysql/expdata/expdata_base/*
 
-dir_cfg=/home/mysql/syncdata
+#dir_cfg=/home/mysql/syncdata
 dir_base=/home/mysql/expdata/expdata_base
 
 #check whether the data dir is valid
@@ -16,12 +16,12 @@ else
 fi
 
 #check whether the config data is valid
-if [ -d $dir_cfg ]; then
-  :
-else
-  echo "cfg path $dir_cfg is invalid, exit now"
-  exit 1
-fi
+#if [ -d $dir_cfg ]; then
+#  :
+#else
+#  echo "cfg path $dir_cfg is invalid, exit now"
+#  exit 1
+#fi
 
 #pick up information of base host
 while read line
@@ -43,14 +43,14 @@ do
     continue
     ;;
   esac
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 if [ -z $ip_base ]; then
   echo "no base host information found, please check the configuration. exit now..."
   exit 1  
 fi
 
-chmod +x $dir_cfg/scpFileToRemote.exp
+chmod +x scpFileToRemote.exp
 
 #foreach remote host,execute scp
 while read line
@@ -66,7 +66,7 @@ do
       passwd=$(echo $line | awk '{print $6}')
       #other param if needed
       if [ -n $ip_trade -a "$ip_trade" != "$ip_base" ]; then
-        $dir_cfg/scpFileToRemote.exp $dir_base $ip_trade $passwd
+        scpFileToRemote.exp $dir_base $ip_trade $passwd
         if [ "$?" = "0" ]; then
           echo "scp files $dir_base to remote host $ip_trade done."
         else
@@ -82,7 +82,7 @@ do
     continue
     ;;
   esac
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 echo "scp files to all remote hosts done."
 

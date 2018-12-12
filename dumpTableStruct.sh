@@ -3,7 +3,7 @@
 
 #this script is used to dump the definition of tables whose syncdir is base to trade
 
-dir_cfg=/home/mysql/syncdata
+#dir_cfg=/home/mysql/syncdata
 dir_exp=/tmp/syncdata
 
 flag=0
@@ -78,6 +78,6 @@ do
   else
     :
   fi
-done < $dir_cfg/host.cnf
+done < host.cnf
 
-
+echo "dump table struct for base and trade done."

@@ -3,7 +3,7 @@
 
 dir_export=/home/mysql/expdata
 dir_tmp=/tmp/syncdata
-dir_cfg=/home/mysql/syncdata
+#dir_cfg=/home/mysql/syncdata
 
 if [ -d $dir_export ]; then
   :
@@ -42,7 +42,7 @@ do
     continue
     ;;
   esac
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 if [ -z $user ]; then
   echo "no base user found, please check the configuration, exit now..."
