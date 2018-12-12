@@ -54,7 +54,6 @@ fi
 #create file and clean it
 file=$dir_tmp/exportTrade.sql
 
-#export trade in local host
 while read line
 do
   case $line in
@@ -121,6 +120,7 @@ EOF
             exit 1
           fi
           $dir_cfg/cleanupRemote.exp $tmpdir/exp_* $ip $passwd_host
+          
         fi
       fi 
     else
@@ -130,9 +130,10 @@ EOF
   *)
     continue
     ;;
-  esac
+  esac 
 
 done < $dir_cfg/host.cnf
 
-
+#scp remote files to local
+sh $dir_cfg/scpToLocal.sh
 
