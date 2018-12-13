@@ -1,3 +1,7 @@
+#this file is used to configure the host information
+#!!!please remove the unused lines!!! otherwise, it will cause a failure
 #ins[id]  username      pooltype  ip                port    machine_passwd  database_passwd
+#ins1     hs_tabase     0         192.168.137.132   3306    passwd_host     passwd_db
+
 ins1      hs_tabase     0         192.168.137.132   3306    root            root
 ins2      hs_tatrade1   1         192.168.137.130   3306    root            root
