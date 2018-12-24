@@ -1,16 +1,16 @@
 #!/bin/sh
 #exportCfgData.sh
 
-#dir_cfg=/home/mysql/syncdata
+dir_cfg=/home/mysql/syncdata
 dir_tmp=/tmp/syncdata
 
 #check whether the config data is valid
-#if [ -d $dir_cfg ]; then
-#  :
-#else
-#  echo "cfg path $dir_cfg is invalid, exit now"
-#  exit 1
-#fi
+if [ -d $dir_cfg ]; then
+  :
+else
+  echo "cfg path $dir_cfg does not exist, create it now"
+  mkdir $dir_cfg
+fi
 
 #pick up information of base host
 while read line

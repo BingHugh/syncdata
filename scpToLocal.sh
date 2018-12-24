@@ -42,14 +42,14 @@ do
     continue
     ;;
   esac
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 if [ -z $ip_base ]; then
   echo "no base host information found, please check the configuration. exit now..."
   exit 1  
 fi
 
-chmod +x $dir_cfg/scpFileToLocal.exp
+chmod +x scpFileToLocal.exp
 
 #foreach remote host,execute scp
 while read line
@@ -66,7 +66,7 @@ do
         passwd=$(echo $line | awk '{print $6}')
         user=$(echo $line | awk '{print $2}')
         folder="expdata_"$user
-        $dir_cfg/scpFileToLocal.exp $dir_remote/$folder $ip_trade $passwd $dir_local
+        scpFileToLocal.exp $dir_remote/$folder $ip_trade $passwd $dir_local
 
         if [ "$?" = "0" ]; then
           echo "scp files $dir_remote/$folder from remote host $ip_trade done."
@@ -83,7 +83,7 @@ do
     continue
     ;;
   esac
-done < $dir_cfg/host.cnf
+done < host.cnf
 
 echo "scp files from all remote hosts done."
 
